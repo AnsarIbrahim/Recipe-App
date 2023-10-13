@@ -1,0 +1,44 @@
+<% if can? :read, @inventory%>
+<div class="show-inventory max-w-3xl mx-auto mt-8 bg-white p-4 rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold text-blue-500 mb-4"><%= @inventory.name %></h2>
+  <div class="food-add">
+    <%= link_to "Add Inventory Food", new_inventory_inventory_food_path(@inventory), class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"%>
+  </div>
+  <div class="flex flex-col mt-4">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+                <table class="min-w-full text-left text-sm font-light">
+                    <thead class="border-b font-medium dark:border-neutral-500">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Food</th>
+                            <th scope="col" class="px-6 py-3">Quantity</th>
+                            <% if can? :destroy, @inventory %>
+                              <th scope="col" class="px-6 py-3">Actions</th>
+                            <% end %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% @inventory.inventory_foods.each do |food| %>
+                        <tr
+                          class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                        >
+                          <td class="whitespace-nowrap px-6 py-4"><%= food.food.name %></td>
+                          <td class="whitespace-nowrap px-6 py-4"><%= food.quantity %> <%= food.food.measurement_unit %></td>
+                          <td class="whitespace-nowrap px-6 py-4 cursor-pointer">
+                          <% if can? :destroy, @inventory %>
+                          <%= form_with(model: food, url: inventory_food_path(food), method: :delete) do |form| %>
+                            <%= form.submit "Remove", class: "text-blue-500 hover:underline" %>
+                          <% end %>
+                          <% end %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<% end %>

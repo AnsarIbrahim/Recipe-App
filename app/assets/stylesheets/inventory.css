@@ -1,0 +1,106 @@
+.inventories {
+  width: 70vw;
+  height: auto;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.inventory {
+  width: 90%;
+  margin: 30px auto;
+  padding: 20px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inventory-link {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.show-inventory {
+  width: 70vw;
+  height: auto;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: auto;
+}
+
+.food-add {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  border-bottom: 1px solid grey;
+}
+
+table {
+  border-top: 1px solid grey;
+}
+
+td {
+  padding: 5px;
+  margin: 5px auto;
+}
+
+.new-inventory {
+  width: 50vw;
+  height: auto;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.headline {
+  margin: auto;
+}
+
+.new-body form {
+  width: 100%;
+  margin: 20px auto;
+}
+
+form input {
+  width: 100%;
+  margin: 20px auto;
+  height: 3vh;
+}
+
+form textarea {
+  width: 100%;
+  height: 25vh;
+}
+
+form label {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.submitin {
+  width: 200px;
+  height: auto;
+  padding: 2px;
+}
+
+.new-link {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.remove-button {
+  width: 20%;
+  height: 5vh;
+  padding: 4px;
+}

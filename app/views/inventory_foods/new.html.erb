@@ -1,0 +1,21 @@
+<div class="max-w-md mx-auto mt-8 bg-white p-4 rounded-lg shadow-md">
+  <h1 class="text-2xl font-semibold text-blue-500 mb-4">Create Inventory Food</h1>
+
+  <%= form_with model: [@inventory, @inventory_food], url: inventory_inventory_foods_path(params[:inventory_id]) do |form| %>
+    <%= hidden_field_tag :inventory_id, @inventory.id %>
+
+    <div class="mb-4">
+      <%= form.label :food_id, class: "text-lg font-medium" %>
+      <%= form.collection_select :food_id, Food.all, :id, :name, {}, { class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" } %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :quantity, class: "text-lg font-medium" %>
+      <%= form.number_field :quantity, class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="text-center">
+      <%= form.submit "Create Inventory Food", class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

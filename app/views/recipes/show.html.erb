@@ -1,0 +1,96 @@
+<% if can? :read, @recipe %>
+<div class="container mx-auto p-4">
+  <div class="bg-white p-6 rounded-lg shadow-md mt-4 lg:w-1/2 mx-auto">
+    <div class="bg-slate-400 p-6 text-slate-900 flex justify-center items-center flex-col">
+      <h1 class="text-3xl font-semibold flex items-center justify-center">
+        <%= @recipe.name %>
+      </h1>
+      <p class="text-xl mt-4">
+        Preparation time: <%= @recipe.preparation_time %> hour
+      </p>
+      <div class="flex items-center justify-end space-x-4">
+        <% if user_signed_in? %>
+          <%= form_for @recipe, url: update_recipe_privacy_recipe_path(@recipe), method: :patch do |f| %>
+            <% if can? :update, @recipe %>
+            <div class="field mt-2 flex items-center space-x-3">
+              <div class="text-lg font-medium text-gray-800">Public</div>
+              <%= f.check_box :public, class: 'toggle-checkbox', onclick: 'this.form.submit();' %>
+            </div>
+            <% end %>
+            <div class="field">
+              <%= f.submit "" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <p class="text-xl">
+        Cooking time: <%= @recipe.cooking_time %> hours
+      </p>
+      <p class="text-xl mt-4">
+        Description: <%= @recipe.description %>
+      </p>
+      <% if can? :update, @recipe %>
+      <div class="flex gap-5 mt-4 bg-slate-100 p-6 rounded-lg shadow-md">
+          <button class="bg-blue-500 text-white px-4 py-2 rounded text-xs lg:text-base hover:bg-blue-600" id="open-popup">Generate Shopping List</button>
+          <%= link_to new_recipe_food_path(recipe_id: @recipe.id) do %>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-xs lg:text-base">Add Ingredient</button>
+          <% end %>
+        </div>
+        <div id="recipe-popup" class="fixed inset-0 justify-center flex items-center bg-black bg-opacity-50 hidden">
+          <div class="bg-white p-8 rounded-lg h-1/2 w-1/2">
+            <!-- Popup content goes here -->
+            <button class="bg-red-500 text-white px-4 py-2 rounded-full hover-bg-red-600" id="close-popup">X</button>
+            <h2 class="text-2xl font-semibold mt-4">Generate Shopping List</h2>
+            <p>Choose an inventory to use</p>
+            <%= form_tag(shopping_list_path, method: :get, id: 'shopping-list-form') do %>
+              <%= hidden_field_tag :recipe_id, @recipe.id %>
+              <div class="field mt-4">
+                <%= label_tag :inventory_id, "Select Inventory", class: "text-lg font-medium" %>
+                <%= select_tag :inventory_id, options_for_select(Inventory.all.pluck(:name, :id)), class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus-ring-2 focus-ring-blue-500" %>
+              </div>
+              <div class="actions mt-4">
+                <%= submit_tag 'Generate', class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md mt-4">
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-left text-sm font-light">
+      <thead class="border-b font-medium dark:border-neutral-500">
+        <tr>
+          <th scope="col" class="px-6 py-4">Food</th>
+          <th scope="col" class="px-6 py-4">Quantity</th>
+          <th scope="col" class="px-6 py-4">Value</th>
+          <% if can? :destroy, @recipe %>
+            <th scope="col" class="px-6 py-4">Actions</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recipe.recipe_foods.each do |food| %>
+          <tr class="border-b transition duration-300 ease-in-out hover-bg-neutral-100 dark:border-neutral-500 dark:hover-bg-neutral-600">
+            <td class="whitespace-nowrap px-6 py-4"><%= food.food.name %></td>
+            <td class="whitespace-nowrap px-6 py-4"><%= "#{food.quantity} #{food.food.measurement_unit}" %></td>
+            <td class="whitespace-nowrap px-6 py-4">$<%= food.food.price * food.quantity %></td>
+            <td class="whitespace-nowrap px-6 py-4 cursor-pointer">
+              <% if can? :destroy, @recipe %>
+                <%= form_with model: food, url: recipe_food_path(food), method: :delete do |form| %>
+                  <%= form.submit "Remove", class: "px-4 py-2 bg-red-500 hover-bg-red-600 text-white font-medium rounded cursor-pointer" %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  </div>
+</div>
+<% else %>
+ <%= link_to 'See Public Recipe', public_recipes_path %>
+<% end %>

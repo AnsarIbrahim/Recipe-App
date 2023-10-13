@@ -1,0 +1,24 @@
+<div class="bg-white p-6 rounded-lg shadow-md w-[50%] mt-3">
+    <h1 class="text-3xl font-extrabold mb-5 text-gray-800">Recipe Food Create</h1>
+
+    <%= form_with model: [@recipe, @recipe_food], url: recipe_foods_path(@recipe), method: :post, class: "text-gray-800" do |form| %>
+        <%= hidden_field_tag :recipe_id, @recipe.id %>
+
+            <div class="mb-4">
+                <%= form.label :food_id, class: "text-lg font-medium" %>
+                    <%= form.collection_select :food_id, Food.all, :id, :name, {},
+                        class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+            </div>
+
+            <div class="mb-4">
+                <%= form.label :quantity, class: "text-lg font-medium" %>
+                    <%= form.number_field :quantity,
+                        class: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
+            </div>
+
+            <div class="mb-4">
+                <%= form.submit "Create Recipe Food" ,
+                    class: "px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg cursor-pointer" %>
+            </div>
+            <% end %>
+</div>
